@@ -1,0 +1,163 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Random Color Generator</title>
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #767af3;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#random-color {
+    text-align: center;
+    max-width: 90%;
+    width: 500px;
+}
+
+#color-example {
+    width: 100%;
+    height: 300px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    margin-bottom: 25px;
+    transition: background-color 0.5s ease, transform 0.3s ease;
+}
+
+#color-example:hover {
+    transform: scale(1.02);
+}
+
+.color-code {
+    font-size: 24px;
+    font-weight: 600;
+    color: #444;
+    margin: 10px 0;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.9);
+    display: inline-block;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.color-code:hover {
+    background-color: rgba(255, 255, 255, 1);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+#refresh-color {
+    padding: 15px 40px;
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+}
+
+#refresh-color:hover {
+    background-color: #0056b3;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 123, 255, 0.4);
+}
+
+#refresh-color:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(10px); }
+    50% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-10px); }
+}
+
+.copied {
+    animation: fadeInOut 1.5s ease;
+    color: #28a745;
+    font-weight: bold;
+}
+    </style>
+</head>
+<body>
+    <div id="random-color">
+        <div id="color-example"></div>
+        <p class="color-code hex"></p>
+        <p class="color-code rgb"></p>
+        <button id="refresh-color">Generate New Color</button>
+    </div>
+    <script>
+        const colorExample = document.getElementById("color-example");
+        const hexCode = document.querySelector(".hex");
+        const rgbCode = document.querySelector(".rgb");
+        const refreshColorBtn = document.getElementById("refresh-color");
+
+        function generateRandomNum(max) {
+            return Math.floor(Math.random() * (max + 1));
+        }
+
+        function generateRgbColor() {
+            const r = generateRandomNum(255);
+            const g = generateRandomNum(255);
+            const b = generateRandomNum(255);
+            return [r, g, b];
+        }
+
+        function rgbToHex(rgb) {
+            return "#" + rgb.map(color => color.toString(16).padStart(2, '0')).join("");
+        }
+
+        function setColor() {
+            const [r, g, b] = generateRgbColor();
+            const hexColor = rgbToHex([r, g, b]);
+            colorExample.style.backgroundColor = hexColor;
+            rgbCode.textContent = `RGB: ${r}, ${g}, ${b}`;
+            hexCode.textContent = `HEX: ${hexColor}`;
+        }
+
+        function copyToClipBoard() {
+            const text = this.textContent.replace("HEX: ", "").replace("RGB: ", "");
+            navigator.clipboard.writeText(text)
+                .then(() => {
+                    const originalText = this.textContent;
+                    this.textContent = "Copied!";
+                    this.classList.add("copied");
+                    setTimeout(() => {
+                        this.textContent = originalText;
+                        this.classList.remove("copied");
+                    }, 1500);
+                })
+                .catch(() => alert("Failed to copy!"));
+        }
+
+        hexCode.addEventListener("click", copyToClipBoard);
+        rgbCode.addEventListener("click", copyToClipBoard);
+
+        setColor();
+        refreshColorBtn.addEventListener("click", setColor);
+    </script>
+</body>
+</html>

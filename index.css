@@ -1,0 +1,36 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#random-color {
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 30px;
+}
+
+#color-example {
+    width: 500px;
+    height: 400px;
+    border: 1px solid;
+    border-radius: 10px;
+}
+
+.color-code {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+#refresh-color {
+    padding: 10px 20px;
+    font-weight: bold;
+    background-color: deepskyblue;
+    color: white;
+    border: 2px solid blue;
+    font-size: 21px;
+    border-radius: 10px;
+}
+
